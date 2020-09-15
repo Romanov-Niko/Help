@@ -21,12 +21,6 @@ public class Parser {
         if (cvsLine == null && cvsLine.isEmpty()) {
             return result;
         }
-        if (customQuote == ' ') {
-            customQuote = DEFAULT_QUOTE;
-        }
-        if (separators == ' ') {
-            separators = DEFAULT_SEPARATOR;
-        }
 
         StringBuilder currentValue = new StringBuilder();
         boolean inQuotes = false;
@@ -63,9 +57,6 @@ public class Parser {
                     result.add(currentValue.toString());
                     currentValue = new StringBuilder();
                     startCollectChar = false;
-                } else if (character == '\r') {
-                    //ignore LF characters
-                    continue;
                 } else if (character == '\n') {
                     break;
                 } else {
