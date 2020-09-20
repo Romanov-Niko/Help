@@ -13,14 +13,18 @@ public class Parser {
     }
 
     public static List<String> parseLine(String cvsLine, char separators) {
+
+
         return parseLine(cvsLine, separators, DEFAULT_QUOTE);
     }
 
     public static List<String> parseLine(String cvsLine, char separators, char customQuote) {
         List<String> result = new ArrayList<>();
-        if (cvsLine == null && cvsLine.isEmpty()) {
+        if (cvsLine == null || cvsLine.isEmpty()) {
             return result;
         }
+
+        int countQuotes = cvsLine.length() - cvsLine.replaceAll("\"","").length();
 
         StringBuilder currentValue = new StringBuilder();
         boolean inQuotes = false;
@@ -28,39 +32,45 @@ public class Parser {
         boolean doubleQuotesInColumn = false;
 
         char[] characters = cvsLine.toCharArray();
-        for (char character : characters) {
+        for (int i=0; i< characters.length;i++) {
+            if(i!=characters.length-1) {
+                if ((characters[i] == '"') && (characters[i + 1] == '"') && (countQuotes % 2 != 0)) {
+                    currentValue.append(characters[i]);
+                    continue;
+                }
+            }
             if (inQuotes) {
                 startCollectChar = true;
-                if (character == customQuote) {
+                if (characters[i] == customQuote) {
                     inQuotes = false;
                     doubleQuotesInColumn = false;
                 } else {
-                    if (character == '\"') {
+                    if (characters[i] == '"') {
                         if (!doubleQuotesInColumn) {
-                            currentValue.append(character);
+                            currentValue.append(characters[i]);
                             doubleQuotesInColumn = true;
                         }
                     } else {
-                        currentValue.append(character);
+                        currentValue.append(characters[i]);
                     }
                 }
             } else {
-                if (character == customQuote) {
+                if (characters[i] == customQuote) {
                     inQuotes = true;
-                    if (characters[0] != '"' && customQuote == '\"') {
+                    if (characters[0] != '"' && customQuote == '"') {
                         currentValue.append('"');
                     }
                     if (startCollectChar) {
                         currentValue.append('"');
                     }
-                } else if (character == separators) {
+                } else if (characters[i] == separators) {
                     result.add(currentValue.toString());
                     currentValue = new StringBuilder();
                     startCollectChar = false;
-                } else if (character == '\n') {
+                } else if (characters[i] == '\n') {
                     break;
                 } else {
-                    currentValue.append(character);
+                    currentValue.append(characters[i]);
                 }
             }
         }
