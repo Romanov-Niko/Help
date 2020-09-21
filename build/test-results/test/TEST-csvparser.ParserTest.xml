@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="csvparser.ParserTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2020-09-14T12:34:07" hostname="DESKTOP-P88O7Q1" time="0.011">
+  <properties/>
+  <testcase name="test_custom_separator_and_quote_but_double_quotes_in_column()" classname="csvparser.ParserTest" time="0.001"/>
+  <testcase name="test_custom_separator_and_quote()" classname="csvparser.ParserTest" time="0.0"/>
+  <testcase name="test_custom_separator()" classname="csvparser.ParserTest" time="0.0"/>
+  <testcase name="test_custom_separator_and_quote_but_custom_quote_in_column()" classname="csvparser.ParserTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
