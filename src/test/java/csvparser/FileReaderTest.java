@@ -24,7 +24,7 @@ class FileReaderTest {
         Stream<String> expected = Stream.of("10,AU,,Australia", "11,AU,\"\",Aus\"\"tralia", "\"12\",\"AU\",\" \",\"Australia\"",
                 "\"13\",\"AU\",\"Aus \"\" tralia\"", "\"14\",\"AU\",\"Aus,tralia\"");
 
-        Stream<String> actual = fileReader.read("country.csv");
+        Stream<String> actual = fileReader.read("testData.csv");
 
         assertStreamEquals(expected, actual);
     }
