@@ -1,7 +1,10 @@
 package csvparser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Parser {
 
@@ -18,20 +21,22 @@ public class Parser {
         return parseLine(cvsLine, separators, DEFAULT_QUOTE);
     }
 
-    public static List<String> parseLine(String cvsLine, char separators, char customQuote) {
+    public static List<String> parseLine(String csvLine, char separators, char customQuote) {
+        csvLine = filterString(csvLine);
+
         List<String> result = new ArrayList<>();
-        if (cvsLine == null || cvsLine.isEmpty()) {
+        if (csvLine == null || csvLine.isEmpty()) {
             return result;
         }
 
-        int countQuotes = cvsLine.length() - cvsLine.replaceAll("\"","").length();
+        int countQuotes = csvLine.length() - csvLine.replaceAll("\"","").length();
 
         StringBuilder currentValue = new StringBuilder();
         boolean inQuotes = false;
         boolean startCollectChar = false;
         boolean doubleQuotesInColumn = false;
 
-        char[] characters = cvsLine.toCharArray();
+        char[] characters = csvLine.toCharArray();
         for (int i=0; i< characters.length;i++) {
             if(i!=characters.length-1) {
                 if ((characters[i] == '"') && (characters[i + 1] == '"') && (countQuotes % 2 != 0)) {
@@ -76,5 +81,11 @@ public class Parser {
         }
         result.add(currentValue.toString());
         return result;
+    }
+
+    private static String filterString(String code) {
+        String partialFiltered = code.replaceAll("/\\*[^*/]*\\*/", "");
+        String fullFiltered = partialFiltered.replaceAll("//.*(?=\\n)", "");
+        return fullFiltered;
     }
 }
