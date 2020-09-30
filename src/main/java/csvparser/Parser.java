@@ -16,8 +16,6 @@ public class Parser {
     }
 
     public static List<String> parseLine(String cvsLine, char separators) {
-
-
         return parseLine(cvsLine, separators, DEFAULT_QUOTE);
     }
 

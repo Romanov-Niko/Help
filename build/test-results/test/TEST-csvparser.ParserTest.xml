@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="csvparser.ParserTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2020-09-21T06:25:18" hostname="DESKTOP-P88O7Q1" time="0.008">
+<testsuite name="csvparser.ParserTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2020-09-30T11:05:54" hostname="DESKTOP-P88O7Q1" time="0.012">
   <properties/>
-  <testcase name="test_custom_separator_and_quote_but_double_quotes_in_column()" classname="csvparser.ParserTest" time="0.004"/>
-  <testcase name="test_custom_separator_and_quote()" classname="csvparser.ParserTest" time="0.002"/>
+  <testcase name="test_custom_separator_and_quote_but_double_quotes_in_column()" classname="csvparser.ParserTest" time="0.005"/>
+  <testcase name="test_parse_of_line_with_custom_separators_and_default_quote()" classname="csvparser.ParserTest" time="0.002"/>
+  <testcase name="test_parse_of_line_with_default_separator_and_quote()" classname="csvparser.ParserTest" time="0.001"/>
+  <testcase name="test_custom_separator_and_quote()" classname="csvparser.ParserTest" time="0.0"/>
   <testcase name="test_custom_separator()" classname="csvparser.ParserTest" time="0.0"/>
   <testcase name="test_custom_separator_and_quote_but_custom_quote_in_column()" classname="csvparser.ParserTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
