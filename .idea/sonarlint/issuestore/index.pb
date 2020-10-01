@@ -62,3 +62,7 @@ h
 8build/test-results/test/TEST-csvparser.FormatterTest.xml,9\e\9e24d3e5931dc5c84b9436e8b8db38bba1cb727a
 e
 5build/test-results/test/TEST-csvparser.ParserTest.xml,1\b\1b3fc0fb988114d19e760e7d426f98c8bf752d62
+U
+%src/test/java/csvparser/MainTest.java,e\c\ecd4c4fbce7a2506307ceff6b0c665c9a9d6b899
+X
+(src/main/java/csvparser/StringAsker.java,8\0\80a9f766bfe4adaa9591710c31dc2a1882160a5e
