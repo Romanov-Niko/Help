@@ -17,7 +17,7 @@ class MainTest {
     @Test
     void main() throws IOException {
         StringAsker asker = mock(StringAsker.class);
-        when(asker.ask("ENTER FILE NAME: ")).thenReturn("country.csv");
+        when(asker.ask("ENTER FILE NAME: ")).thenReturn("data/country.csv");
         when(asker.ask("ENTER SEPARATOR: ")).thenReturn("*");
 
         doWork(asker);

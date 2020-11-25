@@ -54,3 +54,5 @@ U
 %src/test/java/csvparser/MainTest.java,e\c\ecd4c4fbce7a2506307ceff6b0c665c9a9d6b899
 X
 (src/main/java/csvparser/StringAsker.java,8\0\80a9f766bfe4adaa9591710c31dc2a1882160a5e
+]
+-src/main/java/csvparser/ConcurrentParser.java,e\9\e9a53204e2a9b0f7cd3dcab05c2bf9e83f894be2

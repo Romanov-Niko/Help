@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 import static csvparser.Parser.parseLine;
 import static java.util.stream.Collectors.toList;
@@ -17,33 +19,37 @@ import static java.util.stream.Collectors.toList;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        //doWork(new StringAsker(System.in, System.out));
         doConcurrent(new StringAsker(System.in, System.out));
-    }
-
-    public static void doWork(StringAsker asker) throws IOException {
-        String fileName = asker.ask("ENTER FILE NAME: ");
-        String separator = asker.ask("ENTER SEPARATOR: ");
-        FileReader fileReader = new FileReader();
-        Formatter formatter = new Formatter();
-        List<String> lines = fileReader.read(fileName).collect(toList());
-        List<String> parsedLines = new ArrayList<>();
-        lines.forEach(line -> parsedLines.add(formatter.format(parseLine(line), separator)));
-        File file = new File("result.txt");
-        String absolutePath = file.getAbsolutePath();
-        Files.write(Paths.get(absolutePath), parsedLines, StandardCharsets.UTF_8);
     }
 
     public static void doConcurrent(StringAsker asker) throws IOException {
         File file = new File("result.txt");
         String absolutePath = file.getAbsolutePath();
         Files.write(Paths.get(absolutePath), new ArrayList<>(), StandardCharsets.UTF_8);
-        String fileName = asker.ask("ENTER FILE NAME: ");
+        String fileDirectory = asker.ask("ENTER FILE DIRECTORY: ");
         String separator = asker.ask("ENTER SEPARATOR: ");
         String numberOfThreads = asker.ask("ENTER NUMBER OF THREADS: ");
-        FileReader fileReader = new FileReader();
-        List<String> lines = fileReader.read(fileName).collect(toList());
+        List<String> allLines = Main.listAllFiles(fileDirectory);
         ConcurrentParser concurrentParser = new ConcurrentParser();
-        concurrentParser.process(Integer.parseInt(numberOfThreads), lines, separator, file.getAbsolutePath());
+        concurrentParser.process(Integer.parseInt(numberOfThreads), allLines, separator, file.getAbsolutePath());
+    }
+
+    public static List<String> listAllFiles(String path){
+        List<String> result = new ArrayList<>();
+        try(Stream<Path> paths = Files.walk(Paths.get(path))) {
+            paths.forEach(filePath -> {
+                if (Files.isRegularFile(filePath)) {
+                    try {
+                        List<String> fileList = Files.readAllLines(filePath);
+                        result.addAll(fileList);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
