@@ -17,7 +17,8 @@ import static java.util.stream.Collectors.toList;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        doWork(new StringAsker(System.in, System.out));
+        //doWork(new StringAsker(System.in, System.out));
+        doConcurrent(new StringAsker(System.in, System.out));
     }
 
     public static void doWork(StringAsker asker) throws IOException {
@@ -31,5 +32,18 @@ public class Main {
         File file = new File("result.txt");
         String absolutePath = file.getAbsolutePath();
         Files.write(Paths.get(absolutePath), parsedLines, StandardCharsets.UTF_8);
+    }
+
+    public static void doConcurrent(StringAsker asker) throws IOException {
+        File file = new File("result.txt");
+        String absolutePath = file.getAbsolutePath();
+        Files.write(Paths.get(absolutePath), new ArrayList<>(), StandardCharsets.UTF_8);
+        String fileName = asker.ask("ENTER FILE NAME: ");
+        String separator = asker.ask("ENTER SEPARATOR: ");
+        String numberOfThreads = asker.ask("ENTER NUMBER OF THREADS: ");
+        FileReader fileReader = new FileReader();
+        List<String> lines = fileReader.read(fileName).collect(toList());
+        ConcurrentParser concurrentParser = new ConcurrentParser();
+        concurrentParser.process(Integer.parseInt(numberOfThreads), lines, separator, file.getAbsolutePath());
     }
 }
