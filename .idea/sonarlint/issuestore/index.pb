@@ -28,8 +28,6 @@ result.txt,b\d\bdd922bb216a40a75feefa8a8f6b904213bfef80
 +build/reports/tests/test/css/base-style.css,d\9\d9a3e8ca011500a21b32e71e65213d18ab3f5876
 [
 +.gradle/buildOutputCleanup/cache.properties,f\0\f0ce9208a20ebd9d1f763074c5870c3f31ef115a
-P
- build/resources/main/country.csv,7\8\784508ecfaeadf11e3c4646363de8c6f312121ff
 I
 .gradle/6.3/gc.properties,7\f\7f62ae1a027e2980ac42cdb57d771cc1df646c94
 I

@@ -27,6 +27,7 @@ public class Main {
         String absolutePath = file.getAbsolutePath();
         Files.write(Paths.get(absolutePath), new ArrayList<>(), StandardCharsets.UTF_8);
         String fileDirectory = asker.ask("ENTER FILE DIRECTORY: ");
+        //String fileDirectory = "A:\\Lab_1\\src\\main\\resources\\directory3";
         String separator = asker.ask("ENTER SEPARATOR: ");
         String numberOfThreads = asker.ask("ENTER NUMBER OF THREADS: ");
         List<String> allLines = Main.listAllFiles(fileDirectory);
