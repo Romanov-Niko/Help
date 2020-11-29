@@ -2,6 +2,7 @@ package csvparser;
 
 import javax.annotation.processing.Processor;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -17,12 +18,13 @@ import static java.lang.System.lineSeparator;
 
 public class ConcurrentParser {
 
-    public void process(int numberOfThreads, List<String> lines, String separator, String absolutePath) {
+    public void process(int numberOfThreads, List<String> lines, String separator) throws IOException {
         ExecutorService service = Executors.newFixedThreadPool(numberOfThreads);
         Formatter formatter = new Formatter();
         System.out.println("Start = " + LocalDateTime.now());
+        int counter = 0;
         for (String line : lines) {
-            service.execute(new MyTask(line, separator, absolutePath, formatter));
+            service.execute(new MyTask(++counter, line, separator, formatter));
         }
         service.shutdown();
         try {
@@ -31,30 +33,31 @@ public class ConcurrentParser {
             e.printStackTrace();
         }
         System.out.println("End = " + LocalDateTime.now());
+        Main.synchronizeRows(new File("result.txt"));
     }
 
     public static class MyTask implements Runnable {
 
         String line;
         String separator;
-        String absolutePath;
         Formatter formatter;
+        int counter;
 
-        public MyTask( String line, String separator, String absolutePath, Formatter formatter) {
+        public MyTask(int counter, String line, String separator, Formatter formatter) {
             this.line = line;
             this.separator = separator;
-            this.absolutePath = absolutePath;
             this.formatter = formatter;
+            this.counter = counter;
         }
 
         @Override
         public void run() {
-            try{
-                FileWriter fstream = new FileWriter("result.txt",true);
+            try {
+                FileWriter fstream = new FileWriter("result.txt", true);
                 BufferedWriter out = new BufferedWriter(fstream);
-                out.write(formatter.format(Parser.parseLine(line), separator)+lineSeparator());
+                out.write(counter+"###"+formatter.format(Parser.parseLine(line), separator) + lineSeparator());
                 out.close();
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.err.println("Error while writing to file: " +
                         e.getMessage());
             }

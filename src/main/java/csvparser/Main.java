@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -26,13 +27,13 @@ public class Main {
         File file = new File("result.txt");
         String absolutePath = file.getAbsolutePath();
         Files.write(Paths.get(absolutePath), new ArrayList<>(), StandardCharsets.UTF_8);
-        //String fileDirectory = asker.ask("ENTER FILE DIRECTORY: ");
-        String fileDirectory = "A:\\Lab_1\\src\\main\\resources\\directory4";
+        String fileDirectory = asker.ask("ENTER FILE DIRECTORY: ");
+        //String fileDirectory = "A:\\Lab_1\\src\\main\\resources\\directory4";
         String separator = asker.ask("ENTER SEPARATOR: ");
         String numberOfThreads = asker.ask("ENTER NUMBER OF THREADS: ");
         List<String> allLines = Main.listAllFiles(fileDirectory);
         ConcurrentParser concurrentParser = new ConcurrentParser();
-        concurrentParser.process(Integer.parseInt(numberOfThreads), allLines, separator, file.getAbsolutePath());
+        concurrentParser.process(Integer.parseInt(numberOfThreads), allLines, separator);
     }
 
     public static List<String> listAllFiles(String path){
@@ -52,5 +53,16 @@ public class Main {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static void synchronizeRows(File file) throws IOException {
+        List<String> sortedLines = Files.lines(file.toPath())
+                .parallel()
+                .sorted(Comparator.comparing(line -> Integer.valueOf(line.split("###")[0])))
+                .map(line -> line.split("###")[1])
+                .collect(toList());
+        String absolutePath = file.getAbsolutePath();
+
+        Files.write(Paths.get(absolutePath), sortedLines, StandardCharsets.UTF_8);
     }
 }

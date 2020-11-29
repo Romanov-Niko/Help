@@ -320,3 +320,15 @@ m
 =src/main/resources/directory3/country — копия (98).csv,4\b\4bc7eeee49f069aaa3f38636284d0c1feb0e9b15
 m
 =src/main/resources/directory3/country — копия (99).csv,8\9\899450eb9a95dc2765a63d6041644361c0a6518c
+M
+directory4Results/1Thread.txt,1\c\1c5cccc731f44843b23f44da5f52e0c869ef0cdc
+M
+directory4Results/2Thread.txt,c\1\c1fcf8a31cb2e4c7be9ab53e58c096faa86a152a
+M
+directory4Results/8Thread.txt,f\b\fb191cf32eea9422560a36398b46a66c14265f4b
+N
+directory4Results/32Thread.txt,6\a\6ab8d8f1b0768e405a510250e175824a21d173ec
+Z
+*src/main/resources/directory4/country2.csv,b\e\be85a4936e1a11c3947ddead1b74233350b0efd5
+Z
+*src/main/resources/directory4/country3.csv,e\1\e1d48b0090cfef0e2dd0d7e34a2934c875db2843
