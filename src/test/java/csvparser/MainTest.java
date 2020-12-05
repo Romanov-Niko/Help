@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static csvparser.Main.doConcurrent;
+import static csvparser.Main.toThreads;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -24,15 +24,15 @@ class MainTest {
         expected.add("2*2*10");
 
         StringAsker asker = mock(StringAsker.class);
-        when(asker.ask("ENTER FILE DIRECTORY: ")).thenReturn("A:\\Lab_1\\src\\test\\resources");
-        when(asker.ask("ENTER NUMBER OF THREADS: ")).thenReturn(String.valueOf(4));
-        when(asker.ask("ENTER SEPARATOR: ")).thenReturn("*");
+        when(asker.ask("File directory: ")).thenReturn("A:\\Lab_1\\src\\test\\resources");
+        when(asker.ask("Number of threads: ")).thenReturn(String.valueOf(4));
+        when(asker.ask("Separator: ")).thenReturn("*");
 
-        doConcurrent(asker);
+        toThreads(asker);
 
-        verify(asker).ask("ENTER FILE DIRECTORY: ");
-        verify(asker).ask("ENTER SEPARATOR: ");
-        verify(asker).ask("ENTER NUMBER OF THREADS: ");
+        verify(asker).ask("File directory: ");
+        verify(asker).ask("Separator: ");
+        verify(asker).ask("Number of threads: ");
         File file = new File("result.txt");
         Scanner scanner = new Scanner(file);
         List<String> lines = new ArrayList<>();

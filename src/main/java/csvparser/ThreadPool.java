@@ -1,30 +1,23 @@
 package csvparser;
 
-import javax.annotation.processing.Processor;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
 
 import static java.lang.System.lineSeparator;
 
-public class ConcurrentParser {
+public class ThreadPool {
 
     public void process(int numberOfThreads, List<String> lines, String separator) throws IOException {
         ExecutorService service = Executors.newFixedThreadPool(numberOfThreads);
-        Formatter formatter = new Formatter();
-        System.out.println("Start = " + LocalDateTime.now());
-        int counter = 0;
+        long startTime = System.nanoTime();
+        int lineNumber = 1;
         for (String line : lines) {
-            service.execute(new MyTask(++counter, line, separator, formatter));
+            service.execute(new MyTask(lineNumber++, line, separator));
         }
         service.shutdown();
         try {
@@ -32,7 +25,9 @@ public class ConcurrentParser {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("End = " + LocalDateTime.now());
+        long endTime = System.nanoTime();
+        long elapsedTime = (endTime-startTime)/1000000;
+        System.out.println("Execution time: "+elapsedTime+"ms");
         Main.synchronizeRows(new File("result.txt"));
     }
 
@@ -40,14 +35,13 @@ public class ConcurrentParser {
 
         String line;
         String separator;
-        Formatter formatter;
-        int counter;
+        int lineNumber;
+        Formatter formatter = new Formatter();
 
-        public MyTask(int counter, String line, String separator, Formatter formatter) {
+        public MyTask(int lineNumber, String line, String separator) {
             this.line = line;
             this.separator = separator;
-            this.formatter = formatter;
-            this.counter = counter;
+            this.lineNumber = lineNumber;
         }
 
         @Override
@@ -55,11 +49,10 @@ public class ConcurrentParser {
             try {
                 FileWriter fstream = new FileWriter("result.txt", true);
                 BufferedWriter out = new BufferedWriter(fstream);
-                out.write(counter+"###"+formatter.format(Parser.parseLine(line), separator) + lineSeparator());
+                out.write(lineNumber +"| "+formatter.format(Parser.parseLine(line), separator) + lineSeparator());
                 out.close();
             } catch (Exception e) {
-                System.err.println("Error while writing to file: " +
-                        e.getMessage());
+                e.printStackTrace();
             }
         }
     }

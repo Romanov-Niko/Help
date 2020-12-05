@@ -1,9 +1,7 @@
 package csvparser;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Stream;
 
 import static csvparser.Parser.parseLine;
@@ -20,20 +17,19 @@ import static java.util.stream.Collectors.toList;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        doConcurrent(new StringAsker(System.in, System.out));
+        toThreads(new StringAsker(System.in, System.out));
     }
 
-    public static void doConcurrent(StringAsker asker) throws IOException {
+    public static void toThreads(StringAsker asker) throws IOException {
         File file = new File("result.txt");
         String absolutePath = file.getAbsolutePath();
         Files.write(Paths.get(absolutePath), new ArrayList<>(), StandardCharsets.UTF_8);
-        String fileDirectory = asker.ask("ENTER FILE DIRECTORY: ");
-        //String fileDirectory = "A:\\Lab_1\\src\\main\\resources\\directory4";
-        String separator = asker.ask("ENTER SEPARATOR: ");
-        String numberOfThreads = asker.ask("ENTER NUMBER OF THREADS: ");
+        String fileDirectory = asker.ask("File directory: ");
+        String separator = asker.ask("Separator: ");
+        String numberOfThreads = asker.ask("Number of threads: ");
         List<String> allLines = Main.listAllFiles(fileDirectory);
-        ConcurrentParser concurrentParser = new ConcurrentParser();
-        concurrentParser.process(Integer.parseInt(numberOfThreads), allLines, separator);
+        ThreadPool threadPool = new ThreadPool();
+        threadPool.process(Integer.parseInt(numberOfThreads), allLines, separator);
     }
 
     public static List<String> listAllFiles(String path){
@@ -58,8 +54,8 @@ public class Main {
     public static void synchronizeRows(File file) throws IOException {
         List<String> sortedLines = Files.lines(file.toPath())
                 .parallel()
-                .sorted(Comparator.comparing(line -> Integer.valueOf(line.split("###")[0])))
-                .map(line -> line.split("###")[1])
+                .sorted(Comparator.comparing(line -> Integer.valueOf(line.split("\\| ")[0])))
+                .map(line -> line.split("\\| ")[1])
                 .collect(toList());
         String absolutePath = file.getAbsolutePath();
 
